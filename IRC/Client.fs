@@ -4,23 +4,8 @@ open System.Net.Sockets
 open System.IO
 open System.Threading
 open System
-
-let nickname = "ghost"
-
-let (|CandySaid|_|) (str: string) =
-    let template = sprintf "Candy@root-me.org PRIVMSG %s :" nickname //370 / 5719"
-    if (str.Contains template) then
-        let part =
-            str.Split ":"
-            |> Array.last
-        part.Split "/"
-        |> function
-            | [|a;b|] -> Some(int a, int b)
-            | s ->
-                // let ss = String.concat ":" s
-                // failwithf "fail with Candy saying unexpected numbers: %s" ss
-                None
-    else None
+open Candy
+open Base64
 
 let compute nb1 nb2 =
     let nb = (sqrt (float nb1)) * (float nb2)
@@ -63,12 +48,17 @@ type IRCClient(server, port) =
                 if not streamReader.EndOfStream then
                     let str = streamReader.ReadLine()
                     match str with
-                    | CandySaid (nb1, nb2) ->
+                    | Candy1Said (nb1, nb2) ->
                         Console.WriteLine str
                         let nb =
                             compute nb1 nb2
                             |> sprintf "!ep1 -rep %f"
                         this.SendTo("Candy", nb)
+                    | Candy2Said decodedString ->
+                        Console.WriteLine str
+                        let answer =
+                            sprintf "!ep2 -rep %s" decodedString
+                        this.SendTo("Candy", answer)
                     | _ -> Console.WriteLine str
         }
 

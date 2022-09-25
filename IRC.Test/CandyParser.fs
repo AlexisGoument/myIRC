@@ -1,28 +1,40 @@
-module IRC.Test
+module CandyParser
 
 open NUnit.Framework
-open IRCClient
+open Candy
 
 [<Test>]
-let CandyParser () =
+let Candy1Parser () =
     match "Candy@root-me.org PRIVMSG ghost :370 / 5719" with
-    | CandySaid (370, 5719) -> ()
+    | Candy1Said (370, 5719) -> ()
     | _ -> failwith "Cannot find what Candy said"
 
 [<Test>]
-let CandyParserWhenPrefix () =
+let Candy1ParserWhenPrefix () =
     match "azdazdazdCandy@root-me.org PRIVMSG ghost :4480 / 1" with
-    | CandySaid (4480, 1) -> ()
+    | Candy1Said (4480, 1) -> ()
     | _ -> failwith "Cannot find what Candy said"
 
 [<Test>]
-let CandyParserWhenNoSpace () =
+let Candy1ParserWhenNoSpace () =
     match "Candy@root-me.org PRIVMSG ghost :44/41" with
-    | CandySaid (44, 41) -> ()
+    | Candy1Said (44, 41) -> ()
     | _ -> failwith "Cannot find what Candy said"
 
 [<Test>]
-let CandyParserWhenMoreSpaces () =
+let Candy1ParserWhenMoreSpaces () =
     match "Candy@root-me.org PRIVMSG ghost :    4   /     481     " with
-    | CandySaid (4, 481) -> ()
+    | Candy1Said (4, 481) -> ()
+    | _ -> failwith "Cannot find what Candy said"
+
+[<Test>]
+let Candy2Parser () =
+    match "Candy@root-me.org PRIVMSG ghost :QXhjVE5RNzExbFJiVWllWVpXSk9UUzJtZGhqQ1k=" with
+    | Candy2Said "QXhjVE5RNzExbFJiVWllWVpXSk9UUzJtZGhqQ1k=" -> ()
+    | _ -> failwith "Cannot find what Candy said"
+
+[<Test>]
+let Candy2ParserWhenMoreSpaces () =
+    match "Candy@root-me.org PRIVMSG ghost :   QXhjVE5RNzExbFJiVWllWVpXSk9UUzJtZGhqQ1k=" with
+    | Candy2Said "QXhjVE5RNzExbFJiVWllWVpXSk9UUzJtZGhqQ1k=" -> ()
     | _ -> failwith "Cannot find what Candy said"
