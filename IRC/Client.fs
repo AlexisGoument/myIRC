@@ -57,7 +57,7 @@ type IRCClient(server, port) =
                     | Candy2Said decodedString ->
                         Console.WriteLine str
                         let answer =
-                            sprintf "!ep2 -rep %s" decodedString
+                            sprintf "!ep3 -rep %s" decodedString
                         this.SendTo("Candy", answer)
                     | _ -> Console.WriteLine str
         }
