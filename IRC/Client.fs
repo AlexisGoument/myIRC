@@ -11,6 +11,20 @@ let compute nb1 nb2 =
     let nb = (sqrt (float nb1)) * (float nb2)
     Math.Round(nb, 2)
 
+let CandySaid mode str =
+    match mode, str with
+    | "!ep1", Candy1Said (nb1, nb2) ->
+        compute nb1 nb2
+        |> sprintf "!ep1 -rep %.2f"
+        |> Some
+    | "!ep2", Candy2Said decodedString ->
+        sprintf "!ep2 -rep %s" decodedString
+        |> Some
+    | "!ep3", Candy3Said decodedString ->
+        sprintf "!ep3 -rep %s" decodedString
+        |> Some
+    | _ -> None
+
 type IRCClient(server, port) =
     let client = new TcpClient(server, port)
     let stream = client.GetStream()
@@ -47,24 +61,10 @@ type IRCClient(server, port) =
             while true do
                 if not streamReader.EndOfStream then
                     let str = streamReader.ReadLine()
-                    match mode, str with
-                    | "!ep1", Candy1Said (nb1, nb2) ->
-                        Console.WriteLine str
-                        let nb =
-                            compute nb1 nb2
-                            |> sprintf "!ep1 -rep %f"
-                        this.SendTo("Candy", nb)
-                    | "!ep2", Candy2Said decodedString ->
-                        Console.WriteLine str
-                        let answer =
-                            sprintf "!ep2 -rep %s" decodedString
-                        this.SendTo("Candy", answer)
-                    | "!ep3", Candy3Said decodedString ->
-                        Console.WriteLine str
-                        let answer =
-                            sprintf "!ep3 -rep %s" decodedString
-                        this.SendTo("Candy", answer)
-                    | _ -> Console.WriteLine str
+                    Console.WriteLine str
+                    match CandySaid mode str with
+                    | Some answer -> this.SendTo("Candy", answer)
+                    | None -> ()
         }
 
     member this.ConnectAndListen mode =

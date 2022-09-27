@@ -5,6 +5,7 @@
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Candy.fs" />
     <Compile Include="Rot13Decode.fs" />
     <Compile Include="Base64Decode.fs" />
     <Compile Include="CandyParser.fs" />
