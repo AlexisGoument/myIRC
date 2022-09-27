@@ -5,6 +5,7 @@
     <WarnOn>3390;$(WarnOn)</WarnOn>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ROT13.fs" />
     <Compile Include="Base64.fs" />
     <Compile Include="Candy.fs" />
     <Compile Include="Client.fs" />

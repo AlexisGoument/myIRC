@@ -2,6 +2,7 @@ module CandyParser
 
 open NUnit.Framework
 open Candy
+open FsUnit
 
 [<Test>]
 let Candy1Parser () =
@@ -30,11 +31,23 @@ let Candy1ParserWhenMoreSpaces () =
 [<Test>]
 let Candy2Parser () =
     match "Candy@root-me.org PRIVMSG ghost :QXhjVE5RNzExbFJiVWllWVpXSk9UUzJtZGhqQ1k=" with
-    | Candy2Said "QXhjVE5RNzExbFJiVWllWVpXSk9UUzJtZGhqQ1k=" -> ()
-    | _ -> failwith "Cannot find what Candy said"
+    | Candy2Said "AxcTNQ711lRbUieYZWJOTS2mdhjCY" -> ()
+    | _ -> failwithf "Cannot find what Candy said"
 
 [<Test>]
 let Candy2ParserWhenMoreSpaces () =
     match "Candy@root-me.org PRIVMSG ghost :   QXhjVE5RNzExbFJiVWllWVpXSk9UUzJtZGhqQ1k=" with
-    | Candy2Said "QXhjVE5RNzExbFJiVWllWVpXSk9UUzJtZGhqQ1k=" -> ()
+    | Candy2Said "AxcTNQ711lRbUieYZWJOTS2mdhjCY" -> ()
+    | _ -> failwith "Cannot find what Candy said"
+
+[<Test>]
+let Candy3Parser () =
+    match "Candy@root-me.org PRIVMSG ghost :gcGYR4aZjTgxy7w" with
+    | Candy3Said str -> str |> should equal "tpTLE4nMwGtkl7j"
+    | _ -> failwith "Cannot find what Candy said"
+    
+[<Test>]
+let Candy3ParserWhenMoreSpaces () =
+    match "Candy@root-me.org PRIVMSG ghost :     gcGYR4aZjTgxy7w    " with
+    | Candy3Said str -> str |> should equal "tpTLE4nMwGtkl7j"
     | _ -> failwith "Cannot find what Candy said"
