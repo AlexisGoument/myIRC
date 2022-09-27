@@ -42,19 +42,24 @@ type IRCClient(server, port) =
         sprintf "PRIVMSG %s %s" name msg
         |> this.Send
 
-    member this.Listen() =
+    member this.Listen mode =
         async {
             while true do
                 if not streamReader.EndOfStream then
                     let str = streamReader.ReadLine()
-                    match str with
-                    | Candy1Said (nb1, nb2) ->
+                    match mode, str with
+                    | "!ep1", Candy1Said (nb1, nb2) ->
                         Console.WriteLine str
                         let nb =
                             compute nb1 nb2
                             |> sprintf "!ep1 -rep %f"
                         this.SendTo("Candy", nb)
-                    | Candy2Said decodedString ->
+                    | "!ep2", Candy2Said decodedString ->
+                        Console.WriteLine str
+                        let answer =
+                            sprintf "!ep2 -rep %s" decodedString
+                        this.SendTo("Candy", answer)
+                    | "!ep3", Candy3Said decodedString ->
                         Console.WriteLine str
                         let answer =
                             sprintf "!ep3 -rep %s" decodedString
@@ -62,9 +67,9 @@ type IRCClient(server, port) =
                     | _ -> Console.WriteLine str
         }
 
-    member this.ConnectAndListen() =
+    member this.ConnectAndListen mode =
         async {
-            Async.Start(this.Listen(), cancellationToken.Token)
+            Async.Start(this.Listen mode, cancellationToken.Token)
             sprintf "USER %s %s %s %s" nickname nickname nickname nickname |> this.Send 
             streamWriter.AutoFlush <- true
             sprintf "NICK %s" nickname |> this.Send 

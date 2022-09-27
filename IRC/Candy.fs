@@ -32,10 +32,8 @@ let (|Candy3Said|_|) (str: string) =
         let part =
             str.Split ":"
             |> Array.last
-        try
-            part.Trim()
-            |> Rot13.decode
-            |> Some
-        with
-            | :? System.FormatException as ex -> None
+
+        part.Trim()
+        |> Rot13.decode
+        |> Some
     else None
