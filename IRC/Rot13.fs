@@ -7,7 +7,10 @@ let rec incrementChar nth c =
             match c with
             | 'z' -> 'a'
             | 'Z' -> 'A'
-            | _ -> int c + 1 |> char
+            | c when (c >= 'a' && c < 'z') ||
+                            (c >= 'A' && c < 'Z')
+                    -> int c + 1 |> char
+            | _ -> c
         result |> incrementChar (nth - 1)
 
 let decode str =
