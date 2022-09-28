@@ -58,12 +58,17 @@ type IRCClient(server, port) =
 
     member this.Listen mode =
         async {
+            let mutable gaveAnswer = false
+
             while true do
                 if not streamReader.EndOfStream then
                     let str = streamReader.ReadLine()
                     Console.WriteLine str
                     match CandySaid mode str with
-                    | Some answer -> this.SendTo("Candy", answer)
+                    | Some answer ->
+                        if not gaveAnswer then
+                            this.SendTo("Candy", answer)
+                            gaveAnswer <- true
                     | None -> ()
         }
 
