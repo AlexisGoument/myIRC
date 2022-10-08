@@ -6,6 +6,7 @@ open System.Threading
 open System
 open Candy
 open Base64
+open Python
 
 let compute nb1 nb2 =
     let nb = (sqrt (float nb1)) * (float nb2)
@@ -22,6 +23,10 @@ let CandySaid mode str =
         |> Some
     | "!ep3", Candy3Said decodedString ->
         sprintf "!ep3 -rep %s" decodedString
+        |> Some
+    | "!ep4", Candy4Said s ->
+        let decodedString = runScript "zlib" [s]
+        sprintf "!ep4 -rep %s" decodedString
         |> Some
     | _ -> None
 

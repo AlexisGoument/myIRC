@@ -5,6 +5,7 @@
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Zlib.fs" />
     <Compile Include="Candy.fs" />
     <Compile Include="Rot13Decode.fs" />
     <Compile Include="Base64Decode.fs" />

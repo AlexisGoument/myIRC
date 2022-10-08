@@ -37,3 +37,17 @@ let (|Candy3Said|_|) (str: string) =
         |> Rot13.decode
         |> Some
     else None
+
+let (|Candy4Said|_|) (str: string) =
+    if (str.Contains template) then
+        let part =
+            str.Split ":"
+            |> Array.last
+
+        try
+            let trim = part.Trim()
+            Base64.decode trim |> ignore   //Check if this is Base64 format
+            Some trim
+        with
+            | :? System.FormatException as ex -> None
+    else None

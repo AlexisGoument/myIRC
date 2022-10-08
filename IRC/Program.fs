@@ -3,7 +3,7 @@
 open IRCClient
 open System
 
-let mode = "!ep3"
+let mode = "!ep4"
 
 [<EntryPoint>]
 let main argv =
